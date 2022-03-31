@@ -7,8 +7,9 @@ import { catalogPage } from './views/catalog.js';
 import { loginPage } from './views/login.js';
 import { registerPage } from './views/register.js';
 import { createPage } from './views/create.js';
-
-
+import { detailsPage } from './views/details.js';
+import { editPage } from './views/edit.js';
+import { profilePage } from './views/profile.js';
 
 
 // MAIN  and logoutBtn
@@ -18,23 +19,24 @@ document.getElementById('logoutBtn').addEventListener('click', logout);
 setUserNav();
 
 //Place routing 
+page('/', decorateContext, homeDashboard);
 page('/catalog', decorateContext, catalogPage);
 page('/login', decorateContext, loginPage);
 page('/register', decorateContext, registerPage);
 page('/create', decorateContext, createPage);
+page('/details/:id', decorateContext, detailsPage);
+page('/edit/:id', decorateContext, editPage);
+page('/profile', decorateContext, profilePage);
 
 
 page.start();
 
 
 // different Home view for Guest and User
-// function guestUsersOnly(ctx, next) {
-//     const token = sessionStorage.getItem('authToken');
-//     if (token != null) {
-//         return ctx.page.redirect('/catalog');
-//     }
-//     next();
-// }
+function homeDashboard(ctx, next) {
+    ctx.page.redirect('/catalog');
+    next();
+}
 
 //Middleware
 function decorateContext(ctx, next) {
@@ -51,10 +53,10 @@ function setUserNav() {
         ${email}`;
         document.querySelector('#user').style.display = '';
         document.querySelector('#guest').style.display = 'none';
+
     } else {
         document.querySelector('#user').style.display = 'none';
         document.querySelector('#guest').style.display = ''
-
     }
 }
 
